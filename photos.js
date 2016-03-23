@@ -15,12 +15,19 @@ var figureCount = 3;
 function populateFigures() {
    var filename;
    var currentFig;
-   
+if (figureCount === 3) {
    for (var i=1; i<4; i++) {
-      filename = "Lesson6_Assignment_Sp16/images/IMG_O" + photoOrder[i] + "sm.jpg";
+      filename = "images/IMG_0" + photoOrder[i] + "sm.jpg";
       currentFig = document.getElementsByTagName("img")[i-1];
       currentFig.src = filename;
    }// end of for loop
+} else {
+   for (var i = 0; i < 5; i++) {
+      filename = "images/IMG_0" + photoOrder[i] + "sm.jpg";
+      currentFig = document.getElementsByTagName("img")[i];
+      currentFig.src = filename;
+   }//end of second for loop
+}//end of else
    
 }//end of populateFigures()
 
@@ -55,7 +62,7 @@ function leftArrow() {
 
 // create figure and img elements for fifth image
 function previewFive() {
-
+   var articleEl = document.getElementsByTagName("article")[0];
    var lastFigure = document.createElement("figure");
    
    lastFigure.id = "fig5";
@@ -67,6 +74,29 @@ function previewFive() {
    var lastImage = document.createElement("img");
    lastImage.width = "240";
    lastImage.height = "135";
+   
+   lastFigure.appendChild(lastImage);
+   articleEl.appendChild(lastFigure);
+   
+   //clone figure element for fith image and edit to be first image
+   var firstFigure = lastFigure.cloneNode(true);
+   
+   firstFigure.id = "fig1";
+   firstFigure.style.right = " ";
+   firstFigure.style.left = "45px";
+   
+   articleEl.insertBefore(firstFigure, document.getElementById("fig2"));
+   
+   //add appropriate src values to two new img elements
+   document.getElementsByTagName("img")[0].src = "images/IMG_0" + photoOrder[0] + "sm.jpg";
+   document.getElementsByTagName("img")[4].src = "images/IMG_0" +photoOrder[4] + "sm.jpg"; 
+   
+   figureCount = 5;
+   
+   //disable the 'show more images' button after it has been selected once
+var numberButton = document.querySelector("#fiveButton p");
+numberButton.removeEventListener("click", previewFive, false);
+   
 }//end of previewFive()
 
 // create event listeners for left arrow, right arrow, and center figure element 
@@ -83,8 +113,14 @@ var rightarrow = document.getElementById("rightarrow");
    } else if (rightarrow.attachEvent) {
       rightarrow.attachEvent("onclick", rightArrow);
    }//end of else if
+   
+   var showAllButton = document.querySelector("#fiveButton p");
+ if (showAllButton.addEventListener) {
+    showAllButton.addEventListener("click", previewFive, false);
+ } else if (showAllButton.attachEvent) {
+    showAllButton.attachEvent("onclick", previewFive);
+ }//end of else if
 }//end of createEventListeners function
-
 
 
 /* create event listeners and populate image elements */
